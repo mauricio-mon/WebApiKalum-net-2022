@@ -25,7 +25,7 @@ namespace WebApiKalum.Controllers
             List<CarreraTecnica> carrerasTecnicas = null;
             //Tarea 1
             //carrerasTecnicas = await DbContext.CarreraTecnica.Include(c => c.Aspirantes).Include(c => c.Inscripcion).ToListAsync();
-            carrerasTecnicas = DbContext.CarreraTecnica.Include(c => c.Aspirantes).ToList();
+            carrerasTecnicas = DbContext.CarreraTecnica.Include(c => c.Aspirantes).Include(c => c.Inscripciones).ToList();
             //tarea 2
             if(carrerasTecnicas == null || carrerasTecnicas.Count == 0)
             {

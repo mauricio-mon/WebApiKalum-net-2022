@@ -12,7 +12,11 @@ namespace WebApiKalum
         public DbSet<Inscripcion> Inscripcion {get;set;}
         public DbSet<Alumno> Alumno {get;set;}
         public DbSet<Cargo> Cargo {get;set;}
-        
+        public DbSet<CuentaporCobrar> CuentaporCobrar {get;set;}
+        public DbSet<InversionCarreraTecnica> InversionCarreraTecnica {get;set;}
+        public DbSet<ResultadoExamenAdmision> ResultadoExamenAdmision {get;set;}
+        public DbSet<InscripcionPago> InscripcionPago {get;set;}
+
         public KalumDbContext(DbContextOptions options) : base(options)
         {
             
@@ -26,6 +30,10 @@ namespace WebApiKalum
             modelBuilder.Entity<Inscripcion>().ToTable("Inscripcion").HasKey(i => new {i.InscripcionId});
             modelBuilder.Entity<Alumno>().ToTable("Alumno").HasKey(a => new {a.Carne});
             modelBuilder.Entity<Cargo>().ToTable("Cargo").HasKey(c => c.CargoId);
+            modelBuilder.Entity<CuentaporCobrar>().ToTable("CuentaporCobrar").HasKey(cc => new{cc.Correlativo, cc.Anio, cc.Carne});
+            modelBuilder.Entity<InversionCarreraTecnica>().ToTable("InversionCarreraTecnica").HasKey(ict => new{ict.InversionId});
+            modelBuilder.Entity<ResultadoExamenAdmision>().ToTable("ResultadoExamenAdmision").HasKey(rea => new{rea.NoExpediente, rea.Anio});
+            modelBuilder.Entity<InscripcionPago>().ToTable("InscripcionPago").HasKey(ip => new{ip.NoExpediente});
 
            modelBuilder.Entity<Aspirante>()
                 .HasOne<CarreraTecnica>( a => a.CarreraTecnica)
@@ -53,9 +61,30 @@ namespace WebApiKalum
                 .HasForeignKey(i => i.JornadaId);
 
             modelBuilder.Entity<Inscripcion>()
-                .HasOne(i => i.Alumno)
+                .HasOne<Alumno>(i => i.Alumno)
                 .WithMany(a => a.Inscripcion)
                 .HasForeignKey(i => i.Carne);
+
+
+            modelBuilder.Entity<CuentaporCobrar>()
+                .HasOne<Alumno>(cc => cc.Alumno)
+                .WithMany(a => a.CuentaporCobrar)
+                .HasForeignKey(cc => cc.Carne);
+
+            modelBuilder.Entity<InversionCarreraTecnica>()
+                .HasOne<CarreraTecnica>(ict => ict.CarreraTecnica)
+                .WithMany(ct => ct.Inversiones)
+                .HasForeignKey(ict => ict.InversionId);
+
+            modelBuilder.Entity<ResultadoExamenAdmision>()
+                .HasOne<Aspirante>(rea => rea.Aspirante)
+                .WithMany(a => a.ResultadosExamenAdmisiones)
+                .HasForeignKey(rea => rea.NoExpediente);
+            
+            modelBuilder.Entity<InscripcionPago>()
+                .HasOne<Aspirante>(ip => ip.Aspirante)
+                .WithMany(a => a.IncripcionesPagos)
+                .HasForeignKey(ip => ip.NoExpediente);
 
             
 
