@@ -6,9 +6,9 @@ namespace WebApiKalum
     public class KalumDbContext : DbContext
     {
         public DbSet<CarreraTecnica> CarreraTecnica {get;set;}
-        public DbSet<Jornada> Jornda {get;set;}
+        public DbSet<Jornada> Jornada {get;set;}
         public DbSet<Aspirante> Aspirante {get;set;}
-        public DbSet<ExamenAdmision> ExamenAdminision {get;set;}
+        public DbSet<ExamenAdmision> ExamenAdmision {get;set;}
         public DbSet<Inscripcion> Inscripcion {get;set;}
         public DbSet<Alumno> Alumno {get;set;}
         public DbSet<Cargo> Cargo {get;set;}
